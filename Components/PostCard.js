@@ -8,7 +8,9 @@ export default class PostCard extends React.Component {
         const { navigation, post } = this.props;
         return (
             <TouchableHighlight
-                onPress={this.cardPressed}
+                onPress={() => navigation.navigate('IndividualPost', {
+                    post: post,
+                })}
                 style={styles.card}
             >
                 <View>
@@ -22,10 +24,6 @@ export default class PostCard extends React.Component {
                 </View>
             </TouchableHighlight>
         );
-    }
-
-    cardPressed = () => {
-        this.props.navigation.navigate('OtherScreen');
     }
 }
 
