@@ -5,18 +5,19 @@ import { StyleSheet, Text, View, Button, Dimensions, TouchableHighlight, Alert }
 
 export default class PostCard extends React.Component {
     render() {
+        const { navigation, post } = this.props;
         return (
             <TouchableHighlight
                 onPress={this.cardPressed}
                 style={styles.card}
             >
                 <View>
-                    <Text style={{ fontWeight: 'bold', fontSize: 14 }}>{this.props.post.title}</Text>
+                    <Text style={{ fontWeight: 'bold', fontSize: 14 }}>{post.title}</Text>
                     <Text style={{ fontSize: 12 }}>
-                        {this.props.post.points} points |  
-                         {this.props.post.author} | 
-                         {timeago(this.props.post.created_at_i * 1000)} | 
-                         {this.props.post.children.length} comments
+                        {post.points} points |  
+                         {post.author} | 
+                         {timeago(post.created_at_i * 1000)} | 
+                         {post.children.length} comments
                     </Text>
                 </View>
             </TouchableHighlight>
@@ -24,7 +25,7 @@ export default class PostCard extends React.Component {
     }
 
     cardPressed = () => {
-        Alert.alert(this.props.post.title);
+        this.props.navigation.navigate('OtherScreen');
     }
 }
 
