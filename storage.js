@@ -15,13 +15,6 @@ var storage = new Storage({
 
     // cache data in the memory. default is true.
     enableCache: true,
-
-    // if data was not found in storage or expired,
-    // the corresponding sync method will be invoked and return 
-    // the latest data.
-    sync: {
-        // we'll talk about the details later.
-    }
 })	
 
 global.storage = storage;
