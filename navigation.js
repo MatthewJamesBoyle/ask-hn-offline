@@ -9,8 +9,18 @@ const Navigator = createStackNavigator(
     IndividualPost: IndividualScreen,
     },
     {
-        initialRouteName: 'Home'
-    }
+        initialRouteName: 'Home',
+        navigationOptions: {
+            headerStyle: {
+                backgroundColor: '#f4511e',
+            },
+            headerTintColor: '#fff',
+            title: "Ask HN Offline",
+            headerTitleStyle: {
+                fontWeight: 'bold',
+            },
+        },
+    },
 );
 
 export default Navigator;

@@ -33,7 +33,7 @@ export default class HomeScreen extends React.Component {
                     <Button
                         onPress={this.fetchPosts}
                         title="Download Posts"
-                        color="#841584"
+                        color="#f4511e"
                     />
                 </View>
         );
