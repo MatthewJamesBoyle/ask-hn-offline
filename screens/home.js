@@ -8,7 +8,8 @@ import {
     View,
     Button,
     ScrollView,
-    AsyncStorage
+    AsyncStorage,
+    RefreshControl,
 } from 'react-native';
 
 export default class HomeScreen extends React.Component {
@@ -16,7 +17,8 @@ export default class HomeScreen extends React.Component {
     state = {
         posts: [],
         lastRefreshed: null,
-        loading: true
+        loading: true,
+        refreshing: false,
     }
 
     render() {
@@ -33,7 +35,14 @@ export default class HomeScreen extends React.Component {
         return (
             this.state.posts.length ?
                 <View>
-                    <ScrollView style={{ padding: 5 }}>
+                    <ScrollView
+                        style={{ padding: 5 }}
+                         refreshControl={
+                            <RefreshControl
+                                 refreshing={this.state.refreshing}
+                                 onRefresh={this.refresh}
+                             />}
+                    >
                         {this.state.posts.map(post => (
                             <PostCard
                                 key={post.title}
@@ -53,6 +62,13 @@ export default class HomeScreen extends React.Component {
                     />
                 </View>
         );
+    }
+
+    refresh = async () => {
+        this.setState({ refreshing: true });
+        await this.fetchPosts();
+        
+        this.setState({ refreshing: false });
     }
 
     loadPosts = async () => {
