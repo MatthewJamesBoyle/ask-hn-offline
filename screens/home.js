@@ -2,8 +2,14 @@ import React from 'react';
 import axios from 'axios';
 import { Constants } from 'expo';
 import PostCard from '../components/PostCard';
-import { StyleSheet, Text, View, Button, ScrollView } from 'react-native';
-import '../storage';
+import {
+    StyleSheet,
+    Text,
+    View,
+    Button,
+    ScrollView,
+    AsyncStorage
+} from 'react-native';
 
 export default class HomeScreen extends React.Component {
 
@@ -39,19 +45,20 @@ export default class HomeScreen extends React.Component {
         );
     }
 
-    loadPosts = () => {
-        console.log("loading");
-        storage.load({ key: 'postData' })
-            .then(data => this.setState({
-                posts: data.posts,
-                lastRefreshed: data.dateRefreshed,
-            }))
-            .catch(() => console.log("err"));
-        
+    loadPosts = async () => {
+        try {
+            const data = await AsyncStorage.getItem('@HNOffline:postData');
+            const parsed = JSON.parse(data);
+            this.setState({
+                posts: parsed.posts,
+                lastRefreshed: parsed.dateRefreshed,
+            })
+        } catch (error) {
+            console.log("didnt have data");
+        }    
     }
 
     fetchPosts = async () => {
-        console.log("fetching");
         const response = await axios.get("https://hn.algolia.com/api/v1/search_by_date?tags=ask_hn")
         const posts = response.data.hits;
 
@@ -62,15 +69,11 @@ export default class HomeScreen extends React.Component {
             })
         )
 
-        storage.save({
-            key: 'postData',
-            data: {
+        const store = AsyncStorage.setItem('@HNOffline:postData', JSON.stringify({
                 posts: postsWithComments,
                 dateRefreshed: new Date(),
-            }
-        }).then(() => console.log("saved successfully"))
-        .catch(() => console.log("didn't save"));
-        
+            }));
+            
         this.setState({
             posts: postsWithComments
         })

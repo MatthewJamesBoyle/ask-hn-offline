@@ -1,5 +1,8 @@
 {
   "expo": {
+    "android": {
+      "package": "com.boyle.matt.askHNOffline"
+    },
     "name": "ask-hn-offline",
     "description": "This project is really great.",
     "slug": "ask-hn-offline",
@@ -23,5 +26,17 @@
     "ios": {
       "supportsTablet": true
     }
+  },
+  "hooks": {
+    "postPublish": [
+      {
+        "file": "sentry-expo/upload-sourcemaps",
+        "config": {
+          "organization": "matt-boyle",
+          "project": "ask-hn-offline",
+          "authToken": "b27ac3740746430e96e7c3bf7fed12c0b70be16dcfe740f7a9675cd827d3eab5"
+        }
+      }
+    ]
   }
 }

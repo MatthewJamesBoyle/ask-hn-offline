@@ -23,7 +23,7 @@ const getTitleHeight = post => {
         backgroundColor: '#f6f6ef',
         borderBottomColor: '#eee',
         borderBottomWidth: 1,
-        height: getPostHeight(post) + 15,
+        height: getPostHeight(post) + 20,
     }
 }
 
