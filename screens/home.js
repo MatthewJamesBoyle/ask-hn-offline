@@ -15,11 +15,21 @@ export default class HomeScreen extends React.Component {
 
     state = {
         posts: [],
-        lastRefreshed: null
+        lastRefreshed: null,
+        loading: true
     }
 
     render() {
         this.loadPosts();
+
+        if (this.state.loading) {
+            return (
+                <View style={styles.container}>
+                    <Text>Checking for data.</Text>
+                </View>
+            )
+        
+        }
         return (
             this.state.posts.length ?
                 <View>
@@ -52,13 +62,20 @@ export default class HomeScreen extends React.Component {
             this.setState({
                 posts: parsed.posts,
                 lastRefreshed: parsed.dateRefreshed,
+                loading: false,
             })
         } catch (error) {
             console.log("didnt have data");
+            this.setState({
+                loading: false
+            })
         }    
     }
 
     fetchPosts = async () => {
+        this.setState({
+            loading: true,
+        })
         const response = await axios.get("https://hn.algolia.com/api/v1/search_by_date?tags=ask_hn")
         const posts = response.data.hits;
 
@@ -69,13 +86,14 @@ export default class HomeScreen extends React.Component {
             })
         )
 
-        const store = AsyncStorage.setItem('@HNOffline:postData', JSON.stringify({
+        const store = await AsyncStorage.setItem('@HNOffline:postData', JSON.stringify({
                 posts: postsWithComments,
                 dateRefreshed: new Date(),
             }));
             
         this.setState({
-            posts: postsWithComments
+            posts: postsWithComments,
+            loading: false
         })
     }
 }
